@@ -1,0 +1,113 @@
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule NetworkRequestorSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "com.krungsri.lg.network.Requestor"
+    operation: READ
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule NetworkBeneficiarySystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "com.krungsri.lg.network.Beneficiary"
+    operation: READ
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule SeeYourRequestor {
+    description: "See your vault"
+    participant(p): "com.krungsri.lg.network.Requestor"
+    operation: ALL
+    resource(r): "com.krungsri.lg.network.BankGaruntee"
+  	condition: (p.getIdentifier() == r.requestor.getIdentifier())
+    action: ALLOW
+}
+
+rule SeeYourBeneficiary {
+    description: "See your vault"
+    participant(p): "com.krungsri.lg.network.Beneficiary"
+    operation: ALL
+    resource(r): "com.krungsri.lg.network.BankGaruntee"
+  	condition: (p.getIdentifier() == r.beneficiary.getIdentifier() && r.serviceType == "Approved")
+    action: ALLOW
+}
+
+rule AllowCreateBG1 {
+    description: "See your vault"
+    participant: "com.krungsri.lg.network.Requestor"
+    operation: CREATE
+    resource: "com.krungsri.lg.network.BankGaruntee"
+    action: ALLOW
+}
+
+rule AllowCreateBG2 {
+    description: "See your vault"
+    participant: "com.krungsri.lg.network.Requestor"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule AllowCreateBene1 {
+    description: "See your vault"
+    participant: "com.krungsri.lg.network.Beneficiary"
+    operation: CREATE
+    resource: "com.krungsri.lg.network.UpdateReturn"
+    action: ALLOW
+}
+
+rule AllowCreateBene2 {
+    description: "See your vault"
+    participant: "com.krungsri.lg.network.Beneficiary"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule BankReadBG {
+    description: "BankReadBG"
+    participant(p): "com.krungsri.lg.network.Bank"
+    operation: READ
+    resource(r): "com.krungsri.lg.network.BankGaruntee"
+  	condition: (p.getIdentifier() == r.ibank.getIdentifier())
+    action: ALLOW
+}
+
+rule BankUpdateStatus{
+    description: "BankUpdateStatus"
+    participant: "com.krungsri.lg.network.Bank"
+    operation: CREATE
+    resource: "com.krungsri.lg.network.UpdateStatus"
+    action: ALLOW
+}
+rule BankUpdateApproval {
+    description: "BankUpdateApproval"
+    participant: "com.krungsri.lg.network.Bank"
+    operation: CREATE
+    resource: "com.krungsri.lg.network.UpdateApproval"
+    action: ALLOW
+}
+
+rule BankAll {
+    description: ""
+    participant: "com.krungsri.lg.network.Bank"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}

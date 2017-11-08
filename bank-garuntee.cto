@@ -1,0 +1,48 @@
+namespace com.krungsri.lg.network
+
+participant Requestor identified by id {
+  o String id
+  o String RequestorName
+}
+
+participant Beneficiary identified by id {
+  o String id
+  o String beneficiaryName
+}
+
+participant Bank identified by id {
+  o String id
+  o String bankName
+}
+
+asset BankGaruntee identified by requestId {
+  o String requestId
+  o String projectName
+  o String serviceType default ='Request'
+  o String documentStatus default ='Submit to bank'
+  o String LgType default ='xx'
+  o String BGNo 
+  o String Reason
+  o Double guaranteeAmount
+  
+  o String startDate
+  o String endDate
+  o String returnDate
+  --> Bank ibank
+  --> Requestor requestor
+  --> Beneficiary beneficiary
+}
+
+transaction UpdateStatus {
+  --> BankGaruntee lg
+  o String documentStatus
+}
+
+transaction UpdateApproval {
+  --> BankGaruntee lg
+  o String bgNo
+}
+
+transaction UpdateReturn {
+  --> BankGaruntee lg
+}
